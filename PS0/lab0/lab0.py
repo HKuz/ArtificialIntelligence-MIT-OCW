@@ -55,10 +55,17 @@ def count_pattern(pattern, lst):
 # Problem 2.2: Expression depth
 
 def depth(expr):
-    raise NotImplementedError
+    if not isinstance(expr, (list, tuple)):
+        return 0
+    max_depth = 1  # Picks up outer list/tuple holding expr
+    for item in expr:
+        curr_depth = 1 + depth(item)
+        max_depth = max(max_depth, curr_depth)
+    return max_depth
 
 
 # Problem 2.3: Tree indexing
+
 
 def tree_ref(tree, index):
     raise NotImplementedError
@@ -87,3 +94,33 @@ HOW_WELL_I_LEARNED_601 = "Getting there"
 
 # How many hours did this lab take?
 HOURS = "2"
+
+
+def main():
+    '''
+    Tests to check work
+    '''
+    test_depth = False
+
+    if test_depth:
+        depth_tests = [
+            ['x', 0],
+            [('expt', 'x', 2), 1],
+            [('+', ('expt', 'x', 2), ('expt', 'y', 2)), 2],
+            [('/', ('expt', 'x', 5), ('expt', ('-', ('expt', 'x', 2), 1),
+                                      ('/', 5, 2))), 4]
+        ]
+
+        for t in depth_tests:
+            print "Testing", t[0], "should get", t[1]
+            res = depth(t[0])
+            if(res == t[1]):
+                print "PASSED"
+            else:
+                print "FAILED - returned", res
+
+    return 0
+
+
+if __name__ == '__main__':
+    main()
